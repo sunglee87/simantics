@@ -135,11 +135,6 @@ def process_monte_carlo(original_project_duration):
     mid_pessimistic = statistics.mean(pessimistic_array)
     mid_optimistic = statistics.mean(optimistic_array)
 
-    # subtract from 1
-    mid_average = 1-mid_average
-    mid_pessimistic = 1-mid_pessimistic
-    mid_optimistic = 1-mid_optimistic
-
     print("    monte carlo average for average array", "{:.2f}".format(mid_average*100),'%')
     print("    monte carlo average for pessimistic array", "{:.2f}".format(mid_pessimistic*100),'%')
     print("    monte carlo average for optimistic array", "{:.2f}".format(mid_optimistic*100),'%')
