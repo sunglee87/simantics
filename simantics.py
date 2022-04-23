@@ -62,7 +62,7 @@ def import_json(source_file):
         num_issues = 0
 
         # Print the data of dictionary
-        for i in range(0,5):
+        for i in range(0,len(data)):
             print("\nissue_name:", data[i]['issue_name'])
             print(" timeSpent:", data[i]['timeSpent'])
             print(" due_date:", data[i]['due_date'])
@@ -88,7 +88,7 @@ def import_json(source_file):
     print("    total_man_days:", total_man_days)
     print("    Number of Issues:", num_issues)
     print("    Number of Developers:", num_developers)
-    print("    Average time to implement each feature:", avg_time_per_issue, "days")
+    print("    Average time to implement each feature:", "{:.2f}".format(avg_time_per_issue), "days")
 
     return original_project_duration
 
@@ -122,7 +122,7 @@ def process_monte_carlo(original_project_duration):
         pessimistic_array.append(mid_pessimistic)
 
         # optimistic case: chance it is over time is low
-        mid_optimistic = beta_random_generator(3-math.sqrt(2), 3+math.sqrt(2), display_plot, 'optimistic beta')
+        mid_optimistic = beta_random_generator(5-math.sqrt(2), 5+math.sqrt(2), display_plot, 'optimistic beta')
         optimistic_array.append(mid_optimistic)
 
 
@@ -148,14 +148,14 @@ def process_monte_carlo(original_project_duration):
 
     # Print out final statistics and project duration
     print("\n--+ Final Statistics and Project Estimates:")
-    print("    Original Estimate:", original_project_duration, "days")
+    print("    Original Estimate:", "{:.2f}".format(original_project_duration), "days")
     print("    Pessimistic Project Estimate:", "{:.2f}".format(pessimistic_project_duration) , "days")
     print("    Optimistic Project Estimate:", "{:.2f}".format(optimistic_project_duration) , "days")
     print("    Pert Project Estimate:", "{:.2f}".format(pert_project_duration) , "days")
 
 """ ------------------- MAIN ------------------------------------------- """
 # import json and parse jira information
-original_project_duration = import_json('C:/Users/sungl/Downloads/results (7).json')
+original_project_duration = import_json('C:/Users/sungl/Downloads/results (10).json')
 
 # run the monte carlo simulation to produce project estimates
 process_monte_carlo(original_project_duration)
