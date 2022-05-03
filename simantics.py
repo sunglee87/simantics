@@ -73,19 +73,20 @@ def import_json(source_file):
             # if the original estimate is populated, convert it to hours and add it to the array
             if data[i]['originalEstimate'] != None:
                 estimate_array.append(data[i]['originalEstimate'] / (60 * 60))
-                days = data[i]['originalEstimate']/(60*60*8)
+                days = data[i]['originalEstimate']/(60*60*6) # 6 hours = 1 man day
                 total_man_days = total_man_days + days
 
             #increment number of stories
             num_issues = num_issues + 1
 
+    total_man_days = total_man_days * 1.2 # add 20% for buffer
     avg_time_per_issue = total_man_days/num_issues
     original_project_duration = total_man_days/num_developers
 
     #print initial JIRA information
     print("\n--++ Initial summary from JIRA:")
     print("    estimates for each issue in hours:", estimate_array)
-    print("    total_man_days:", total_man_days)
+    print("    total_man_days:", "{:.2f}".format(total_man_days), "(20% buffer, 6-hour workdays)")
     print("    Number of Issues:", num_issues)
     print("    Number of Developers:", num_developers)
     print("    Average time to implement each feature:", "{:.2f}".format(avg_time_per_issue), "days")
@@ -100,7 +101,7 @@ def process_monte_carlo(original_project_duration):
 
     # initialize variables
     display_plot = False
-    max_run = 100 #number of simulations
+    max_run = 4 #number of simulations
     std_dev = 0
     average_array = []
     pessimistic_array = []
@@ -122,7 +123,7 @@ def process_monte_carlo(original_project_duration):
         pessimistic_array.append(mid_pessimistic)
 
         # optimistic case: chance it is over time is low
-        mid_optimistic = beta_random_generator(5-math.sqrt(2), 5+math.sqrt(2), display_plot, 'optimistic beta')
+        mid_optimistic = beta_random_generator(5-math.sqrt(2), 3+math.sqrt(2), display_plot, 'optimistic beta')
         optimistic_array.append(mid_optimistic)
 
 
@@ -155,7 +156,7 @@ def process_monte_carlo(original_project_duration):
 
 """ ------------------- MAIN ------------------------------------------- """
 # import json and parse jira information
-original_project_duration = import_json('C:/Users/sungl/Downloads/results (10).json')
+original_project_duration = import_json('C:/Users/sungl/Downloads/results (12).json')
 
 # run the monte carlo simulation to produce project estimates
 process_monte_carlo(original_project_duration)
